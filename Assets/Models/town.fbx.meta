@@ -1,0 +1,291 @@
+fileFormatVersion: 2
+guid: 3aa8804ba509c3d4c8904e23e60c03a1
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: pPlane1
+    100002: //RootNode
+    100004: Gallows
+    100006: House1
+    100008: House10
+    100010: House11
+    100012: House12
+    100014: House2
+    100016: House3
+    100018: House4
+    100020: House5
+    100022: House6
+    100024: House7
+    100026: House8
+    100028: House9
+    100030: houses
+    100032: pCube1
+    100034: pCube10
+    100036: pCube11
+    100038: pCube12
+    100040: pCube2
+    100042: pCube3
+    100044: pCube4
+    100046: pCube5
+    100048: pCube6
+    100050: pCube7
+    100052: pCube8
+    100054: pCube9
+    100056: Platform
+    100058: roads
+    100060: terrain
+    100062: joint2
+    100064: joint3
+    100066: SnareJoint
+    400000: pPlane1
+    400002: //RootNode
+    400004: Gallows
+    400006: House1
+    400008: House10
+    400010: House11
+    400012: House12
+    400014: House2
+    400016: House3
+    400018: House4
+    400020: House5
+    400022: House6
+    400024: House7
+    400026: House8
+    400028: House9
+    400030: houses
+    400032: pCube1
+    400034: pCube10
+    400036: pCube11
+    400038: pCube12
+    400040: pCube2
+    400042: pCube3
+    400044: pCube4
+    400046: pCube5
+    400048: pCube6
+    400050: pCube7
+    400052: pCube8
+    400054: pCube9
+    400056: Platform
+    400058: roads
+    400060: terrain
+    400062: joint2
+    400064: joint3
+    400066: SnareJoint
+    2100000: mat_grass
+    2100002: mat_brick
+    2100004: mat_wood_2
+    2100006: mat_snare
+    2100008: mat_wood
+    2100010: mat_wall
+    2100012: mat_chimney
+    2100014: mat_roof
+    2300000: pPlane1
+    2300002: Gallows
+    2300004: House1
+    2300006: House10
+    2300008: House11
+    2300010: House12
+    2300012: House2
+    2300014: House3
+    2300016: House4
+    2300018: House5
+    2300020: House6
+    2300022: House7
+    2300024: House8
+    2300026: House9
+    2300028: pCube1
+    2300030: pCube10
+    2300032: pCube11
+    2300034: pCube12
+    2300036: pCube2
+    2300038: pCube3
+    2300040: pCube4
+    2300042: pCube5
+    2300044: pCube6
+    2300046: pCube7
+    2300048: pCube8
+    2300050: pCube9
+    2300052: Platform
+    2300054: terrain
+    3300000: pPlane1
+    3300002: Gallows
+    3300004: House1
+    3300006: House10
+    3300008: House11
+    3300010: House12
+    3300012: House2
+    3300014: House3
+    3300016: House4
+    3300018: House5
+    3300020: House6
+    3300022: House7
+    3300024: House8
+    3300026: House9
+    3300028: pCube1
+    3300030: pCube10
+    3300032: pCube11
+    3300034: pCube12
+    3300036: pCube2
+    3300038: pCube3
+    3300040: pCube4
+    3300042: pCube5
+    3300044: pCube6
+    3300046: pCube7
+    3300048: pCube8
+    3300050: pCube9
+    3300052: Platform
+    3300054: terrain
+    4300000: pPlane1
+    4300002: Platform
+    4300004: Gallows
+    4300006: terrain
+    4300008: pCube1
+    4300010: pCube12
+    4300012: pCube11
+    4300014: pCube10
+    4300016: pCube9
+    4300018: pCube8
+    4300020: pCube7
+    4300022: pCube6
+    4300024: pCube5
+    4300026: pCube4
+    4300028: pCube3
+    4300030: pCube2
+    4300032: House1
+    4300034: House2
+    4300036: House3
+    4300038: House4
+    4300040: House5
+    4300042: House6
+    4300044: House7
+    4300046: House8
+    4300048: House9
+    4300050: House10
+    4300052: House11
+    4300054: House12
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_brick
+    second: {fileID: 2100000, guid: ac45b0e252b56c6468b646446bb676a1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_chimney
+    second: {fileID: 2100000, guid: 7b3603ea95dcec745b0a7ce2d64ff20e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_grass
+    second: {fileID: 2100000, guid: 4638d8867328ab946be3336480e44af5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_roof
+    second: {fileID: 2100000, guid: 4b0b97384ecc59747bbe987a133287e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_snare
+    second: {fileID: 2100000, guid: 841db2438ceda0245b3b7447a550149f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_wall
+    second: {fileID: 2100000, guid: 91a79ab58cdeacf459fda97476e6dba8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_wood
+    second: {fileID: 2100000, guid: 46347cf415c57714aaa6799a7e4ca51d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_wood_2
+    second: {fileID: 2100000, guid: 71e9f431c1350ec41ba00f9fe1278845, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 65
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
