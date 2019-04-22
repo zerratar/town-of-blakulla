@@ -2,8 +2,6 @@
 
 public static class TwitchColors
 {
-    public static Color Blue = FromHex(0x0000FF);
-
     private static Color FromHex(int i)
     {
         float r = (i >> 16) & 255;
@@ -12,6 +10,7 @@ public static class TwitchColors
         return new Color(r / 255f, g / 255f, b / 255f, 1);
     }
 
+    public static Color Blue = new Color(0.2216981f, 0.2216981f, 1f, 1f);
     public static Color Coral = FromHex(0xFF7F50);
     public static Color DodgerBlue = FromHex(0x1E90FF);
     public static Color SpringGreen = FromHex(0x00FA9A);

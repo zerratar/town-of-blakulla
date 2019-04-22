@@ -61,8 +61,8 @@ public class GameState : MonoBehaviour
             return phases = new Phase[]
             {
                 new DayPhase(
-                    onEnter: OnEnter,
-                    onExit: OnExit,
+                    OnEnter,
+                    OnExit,
                     this.gameUI,
                     this.Camera,
                     this.playerHandler,
@@ -71,8 +71,8 @@ public class GameState : MonoBehaviour
                     useStandard),
 
                 new NightPhase(
-                    onEnter: OnEnter,
-                    onExit: OnExit,
+                    OnEnter,
+                    OnExit,
                     this.gameUI,
                     this.trialVoteHandler,
                     this.playerHandler,
@@ -168,7 +168,7 @@ public class GameState : MonoBehaviour
 
         if (string.IsNullOrEmpty(result))
         {
-            Debug.Log($"The vote has ended with not enough votes.");
+            Debug.Log($"The vote has ended with not enough votes.");            
             return;
         }
 
@@ -270,7 +270,7 @@ public class GameState : MonoBehaviour
         if (!this.startPhase.HasEnded)
         {
             return this.startPhase;
-        }        
+        }
 
         if (this.CurrentPhaseIndex < 0 || this.CurrentPhaseIndex >= this.Phases.Length)
             return null;

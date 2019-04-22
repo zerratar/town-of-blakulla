@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
     {
         var pos = this.transform.position;
         var dist = Vector3.Distance(pos, position);
-        return dist < 0.21f;
+        return dist < 0.22f;
     }
 
     public void ResetPosition()

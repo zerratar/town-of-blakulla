@@ -49,6 +49,16 @@ public class GameUI : MonoBehaviour
         }
     }
 
+    public void SetMessagePositionDefault()
+    {
+        this.lblMessage.rectTransform.localPosition = new Vector3(0, 188.7f);
+    }
+
+    public void SetMessagePositionGallows()
+    {
+        this.lblMessage.rectTransform.localPosition = new Vector3(0, 58.4f);
+    }
+
     public int QueuedMessageCount => messageQueue.Count;
 
     public void ShowMessage(string msg, float duration, Func<bool> shouldHide = null)

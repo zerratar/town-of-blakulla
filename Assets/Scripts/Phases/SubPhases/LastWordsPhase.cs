@@ -22,6 +22,7 @@ public class LastWordsPhase : TimeBasedSubPhase
 
     protected override void Exit()
     {
+        this.gameUi.SetMessagePositionGallows();
     }
 
     protected override string GetStateInfo() => null;

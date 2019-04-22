@@ -30,7 +30,7 @@ public class LeaveGallowsPhase : ConditionBasedSubPhase
         var voteCountFor = judgementVotes.VoteCountFor;
         var maxVoteCount = judgementVotes.VoteCount;
         gameUi.ShowMessage($"The town has decided to pardon <b>{player.PlayerName}</b> by a vote of <color=#e74c3c>{voteCountFor}</color> for <color=#2ecc71>{maxVoteCount - voteCountFor}</color>.",
-            30f, () => this.HasEnded);
+            15f, () => !this.IsActive || this.HasEnded);
     }
 
     protected override void Exit()

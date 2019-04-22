@@ -32,7 +32,10 @@ public class GoHomePhase : ConditionBasedSubPhase
         });
     }
 
-    protected override void Exit() { }
+    protected override void Exit()
+    {
+        this.gameUi.SetMessagePositionDefault();
+    }
 
     public override bool Enabled() => true;
 

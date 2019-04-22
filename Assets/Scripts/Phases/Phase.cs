@@ -67,6 +67,11 @@ public abstract class Phase
 
             if (nextSubPhaseIndexOverride != -1)
             {
+                for (var i = this.nextSubPhaseIndexOverride; i < this.subPhases.Length; ++i)
+                {
+                    this.subPhases[i].HasEnded = false;
+                }
+
                 currentSubPhaseIndex = nextSubPhaseIndexOverride;
                 nextSubPhaseIndexOverride = -1;
             }
@@ -134,9 +139,5 @@ public abstract class Phase
     public void SetNextSubPhase(SubPhase votingPhase)
     {
         this.nextSubPhaseIndexOverride = Array.IndexOf(this.subPhases, votingPhase);
-        for (var i = this.nextSubPhaseIndexOverride; i < this.subPhases.Length; ++i)
-        {
-            this.subPhases[i].HasEnded = false;
-        }
     }
 }

@@ -11,7 +11,7 @@ public abstract class ConditionBasedSubPhase : SubPhase
 
     public override void Update(GameState state)
     {
-        if (!this.IsActive) return;
+        if (!this.IsActive || this.HasEnded) return;
         if (OnCondition(this, state))
         {
             this.OnExit();

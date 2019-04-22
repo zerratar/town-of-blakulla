@@ -84,4 +84,9 @@ public abstract class SubPhase
     }
 
     public abstract string ToDisplayString(Phase phase);
+
+    public void ResetConditionsAndTimers()
+    {
+        this.OnReset();
+    }
 }

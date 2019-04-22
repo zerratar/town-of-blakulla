@@ -34,12 +34,16 @@ public class JudgementPhase : ConditionTimeBasedSubPhase
     protected override void Exit()
     {
         judgementVotes.EndVoting();
-
-        var player = playerHandler.GetPlayerByIndex(trialVotes.Result);
-        var voteCountFor = judgementVotes.VoteCountFor;
-        var maxVoteCount = judgementVotes.VoteCount;
-        gameUi.ShowMessage($"The town has decided to lynch <b>{player.PlayerName}</b> by a vote of <color=#e74c3c>{voteCountFor}</color> for <color=#2ecc71>{maxVoteCount - voteCountFor}</color>.",
-            2f);
+        this.ResetConditionsAndTimers();
+        if (judgementVotes.HasResult && judgementVotes.IsGuilty)
+        {
+            var player = playerHandler.GetPlayerByIndex(trialVotes.Result);
+            var voteCountFor = judgementVotes.VoteCountFor;
+            var maxVoteCount = judgementVotes.VoteCount;
+            gameUi.ShowMessage(
+                $"The town has decided to lynch <b>{player.PlayerName}</b> by a vote of <color=#e74c3c>{voteCountFor}</color> for <color=#2ecc71>{maxVoteCount - voteCountFor}</color>.",
+                2f);
+        }
     }
 
     public override bool Enabled()

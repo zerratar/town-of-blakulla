@@ -27,13 +27,12 @@ public class DayPhase : Phase
             new ReviewNightPhase(playerHandler),
 
             new DiscussionPhase(
-                10f),
+                5f),
             //standardMode ? 45f : 15f)),
 
             new TrialVotingPhase(
                 gameUI, playerHandler, trialVoteHandler,
                 30f),
-            //30f),
 
             new MoveToGallowsPhase(
                 gameUI, trialVoteHandler, playerHandler),
@@ -46,12 +45,11 @@ public class DayPhase : Phase
             //20f),
 
             new JudgementPhase(
-                    gameUI,
-                    playerHandler,
-                    trialVoteHandler,
-                    judgementVoteHandler,
-                    //20f),
-                    20f),
+                gameUI,
+                playerHandler,
+                trialVoteHandler,
+                judgementVoteHandler,
+                20f),
 
             new LeaveGallowsPhase(
                 gameUI,
@@ -62,8 +60,7 @@ public class DayPhase : Phase
             new LastWordsPhase(
                 gameUI,
                 judgementVoteHandler,
-                1f),
-            //5f),
+            5f),
 
             new ExecutionPhase(
                 gameUI,
@@ -77,7 +74,6 @@ public class DayPhase : Phase
                 playerHandler,
                 trialVoteHandler,
                 judgementVoteHandler)
-
         )
     {
         this.onEnter = onEnter;

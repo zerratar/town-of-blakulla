@@ -18,8 +18,7 @@ public class NightPhase : Phase
                 gameUI,
                 trialVotes,
                 playerHandler),
-            //new DuringNightPhase(standardMode ? 30f : 15f))
-            new DuringNightPhase(standardMode ? 30f : 30f))
+            new DuringNightPhase(standardMode ? 30f : 15f))
     {
         this.onEnter = onEnter;
         this.onExit = onExit;
