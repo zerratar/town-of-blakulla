@@ -18,6 +18,14 @@ public class PlayerHandler : MonoBehaviour
         lock (mutex)
         {
             this.players = new List<PlayerController>(GameObject.FindObjectsOfType<PlayerController>());
+            
+            foreach (var player in players)
+            {
+                player.AssignRole(roleManager.GetRandomRole());
+
+                if (UnityEngine.Random.value >= 0.5)
+                    player.UpdateLastWill("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet commodo urna. Duis eu lectus est. Mauris rhoncus justo turpis, a maximus nisl placerat vitae. Nulla facilisi. Mauris consectetur varius ligula, vitae fringilla turpis scelerisque nec. Duis massa diam, convallis nec odio sed, porta malesuada arcu. Nulla eget eros facilisis neque viverra auctor quis eget metus.\r\n\r\nPellentesque imperdiet eros a porta finibus. Phasellus ut nunc.");
+            }
         }
     }
 
@@ -68,8 +76,8 @@ public class PlayerHandler : MonoBehaviour
         lock (mutex)
         {
             return players.FindIndex(x =>
-                x.PlayerData.UsernameOrName != null &&
-                x.PlayerData.UsernameOrName.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+                x.PlayerName != null &&
+                x.PlayerName.Equals(username, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 
@@ -96,7 +104,7 @@ public class PlayerHandler : MonoBehaviour
     {
         lock (mutex)
         {
-            return this.players.Where(x => !x.Lynched && x.IsAssigned).ToList();
+            return this.players.Where(x => !x.Dead && x.IsAssigned).ToList();
         }
     }
 
@@ -104,7 +112,7 @@ public class PlayerHandler : MonoBehaviour
     {
         lock (mutex)
         {
-            return this.players.Where(x => !x.Lynched).ToList();
+            return this.players.Where(x => !x.Dead).ToList();
         }
     }
 
@@ -112,7 +120,7 @@ public class PlayerHandler : MonoBehaviour
     {
         lock (mutex)
         {
-            return this.players.Where(x => x.Lynched).ToList();
+            return this.players.Where(x => x.Dead).ToList();
         }
     }
 

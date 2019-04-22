@@ -3,21 +3,25 @@ using UnityEngine;
 
 public class TrialVotingPhase : ConditionTimeBasedSubPhase
 {
+    private readonly GameUI gameUi;
     private readonly PlayerHandler playerHandler;
     private readonly TrialVoteHandler voteHandler;
 
     public TrialVotingPhase(
+        GameUI gameUI,
         PlayerHandler playerHandler,
         TrialVoteHandler voteHandler,
         float duration)
         : base("Voting", duration)
     {
+        gameUi = gameUI;
         this.playerHandler = playerHandler;
         this.voteHandler = voteHandler;
     }
 
     protected override void Enter()
     {
+        gameUi.ShowMessage("Todays public vote will now begin.", 2.5f);
         voteHandler.BeginVoting();
     }
 

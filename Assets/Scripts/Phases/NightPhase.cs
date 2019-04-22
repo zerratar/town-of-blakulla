@@ -8,11 +8,16 @@ public class NightPhase : Phase
     public NightPhase(
         Action<Phase> onEnter,
         Action<Phase> onExit,
+        GameUI gameUI,
+        TrialVoteHandler trialVotes,
         PlayerHandler playerHandler,
         bool standardMode)
         : base(
             "Night",
-            new GoHomePhase(playerHandler),
+            new GoHomePhase(
+                gameUI,
+                trialVotes,
+                playerHandler),
             //new DuringNightPhase(standardMode ? 30f : 15f))
             new DuringNightPhase(standardMode ? 30f : 30f))
     {

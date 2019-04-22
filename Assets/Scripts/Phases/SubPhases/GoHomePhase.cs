@@ -3,17 +3,28 @@ using UnityEngine;
 
 public class GoHomePhase : ConditionBasedSubPhase
 {
+    private readonly GameUI gameUi;
+    private readonly TrialVoteHandler trialVotes;
     private readonly PlayerHandler playerHandler;
 
     public GoHomePhase(
+            GameUI gameUI,
+            TrialVoteHandler trialVotes,
             PlayerHandler playerHandler)
         : base("Day is over - going home")
     {
+        gameUi = gameUI;
+        this.trialVotes = trialVotes;
         this.playerHandler = playerHandler;
     }
 
     protected override void Enter()
     {
+        if (!trialVotes.HasResult)
+        {
+            gameUi.ShowMessage("It is too late to continue voting.", 30f, () => this.HasEnded);
+        }
+
         playerHandler.GetAlivePlayers().ForEach(x =>
         {
             x.DisableNavigation();
@@ -25,7 +36,7 @@ public class GoHomePhase : ConditionBasedSubPhase
 
     public override bool Enabled() => true;
 
-    protected override string GetStateInfo() => null;
+    protected override string GetDebugInfo() => null;
 
     protected override bool OnCondition(SubPhase phase, GameState state)
     {

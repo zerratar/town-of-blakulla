@@ -13,6 +13,7 @@ public class DayPhase : Phase
     public DayPhase(
         Action<Phase> onEnter,
         Action<Phase> onExit,
+        GameUI gameUI,
         WaypointCamera camera,
         PlayerHandler playerHandler,
         TrialVoteHandler trialVoteHandler,
@@ -20,26 +21,32 @@ public class DayPhase : Phase
         bool standardMode)
         : base(
             "Day",
+
             new GotoTownPhase(playerHandler),
+
+            new ReviewNightPhase(playerHandler),
 
             new DiscussionPhase(
                 10f),
             //standardMode ? 45f : 15f)),
 
             new TrialVotingPhase(
-                playerHandler,
-                trialVoteHandler,
+                gameUI, playerHandler, trialVoteHandler,
                 30f),
-                //30f),
+            //30f),
 
-            new MoveToGallowsPhase(trialVoteHandler),
+            new MoveToGallowsPhase(
+                gameUI, trialVoteHandler, playerHandler),
 
             new DefensePhase(
+                gameUI,
+                playerHandler,
                 trialVoteHandler,
-            1f),
-                //20f),
+            5f),
+            //20f),
 
             new JudgementPhase(
+                    gameUI,
                     playerHandler,
                     trialVoteHandler,
                     judgementVoteHandler,
@@ -47,20 +54,30 @@ public class DayPhase : Phase
                     20f),
 
             new LeaveGallowsPhase(
+                gameUI,
                 playerHandler,
                 trialVoteHandler,
                 judgementVoteHandler),
 
             new LastWordsPhase(
+                gameUI,
                 judgementVoteHandler,
                 1f),
-                //5f),
+            //5f),
 
             new ExecutionPhase(
+                gameUI,
                 camera,
                 playerHandler,
                 trialVoteHandler,
+                judgementVoteHandler),
+
+            new ReviewExecutionPhase(
+                gameUI,
+                playerHandler,
+                trialVoteHandler,
                 judgementVoteHandler)
+
         )
     {
         this.onEnter = onEnter;

@@ -36,23 +36,30 @@ public abstract class Phase
             Enter();
         }
 
-        var phase = subPhases[currentSubPhaseIndex];
-
-        var isPhaseEnabled = phase.Enabled();
-
-        if (isPhaseEnabled && !phase.HasEnded)
+        var subPhaseEnded = false;
+        var isPhaseEnabled = false;
+        if (currentSubPhaseIndex < subPhases.Length)
         {
-            if (!phase.IsActive)
+            var phase = subPhases[currentSubPhaseIndex];
+
+            isPhaseEnabled = phase.Enabled();
+
+            if (isPhaseEnabled && !phase.HasEnded)
             {
-                phase.OnEnter();
+                if (!phase.IsActive)
+                {
+                    phase.OnEnter();
+                }
+
+                phase.Update(gameState);
             }
 
-            phase.Update(gameState);
+            subPhaseEnded = phase.HasEnded;
         }
 
-        if (!isPhaseEnabled || phase.HasEnded)
+        if (!isPhaseEnabled || subPhaseEnded)
         {
-            if (currentSubPhaseIndex == subPhases.Length - 1)
+            if (currentSubPhaseIndex >= subPhases.Length - 1)
             {
                 Exit();
                 return;

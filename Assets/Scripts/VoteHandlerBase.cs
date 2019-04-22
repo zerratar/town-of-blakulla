@@ -60,9 +60,12 @@ public abstract class VoteHandlerBase<TKey>
 
         var totalVoteCount = voteValues.Sum(x => x.VoteCount);
 
+        VoteCountFor = 0;
+
         if (toBeLynched != null)
         {
             Result = toBeLynched.Target;
+            VoteCountFor = toBeLynched.VoteCount;
             VoteEnded(Result, toBeLynched.VoteCount, totalVoteCount);
             return;
         }
@@ -70,6 +73,8 @@ public abstract class VoteHandlerBase<TKey>
         Result = EmptyResult();
         VoteEnded(Result, 0, totalVoteCount);
     }
+
+    public int VoteCountFor { get; private set; }
 
     public int GetRequiredVoteCount()
     {
@@ -81,13 +86,13 @@ public abstract class VoteHandlerBase<TKey>
         return this.gameState.GetAliveAndAssignedPlayers().Count;
     }
 
-    public int GetVoteCount()
-    {
-        return votes
-            .GroupBy(x => x.Value)
-            .Select(x => new { Target = x.Key, VoteCount = x.Count() })
-            .Sum(x => x.VoteCount);
-    }
+    //public int GetVoteCount()
+    //{
+    //    return votes
+    //        .GroupBy(x => x.Value)
+    //        .Select(x => new { Target = x.Key, VoteCount = x.Count() })
+    //        .Sum(x => x.VoteCount);
+    //}
 
     protected abstract TKey EmptyResult();
 

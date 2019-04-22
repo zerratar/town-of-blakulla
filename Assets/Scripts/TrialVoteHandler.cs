@@ -13,7 +13,7 @@
     protected override int EmptyResult() => -1;
 
     protected override void VoteEnded(int votedPlayer, int voteCount, int totalVoteCount)
-    {
+    {        
         gameState.PutPlayerOnTrialPlayer(votedPlayer, voteCount);
     }
 }

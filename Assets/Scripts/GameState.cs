@@ -48,6 +48,9 @@ public class GameState : MonoBehaviour
     internal int daysPassed = -1;
     private PlayerHandler playerHandler;
     private Phase[] phases;
+    private StartPhase startPhase;
+    private EndPhase endPhase;
+    private GameUI gameUI;
 
     public Phase[] Phases
     {
@@ -60,6 +63,7 @@ public class GameState : MonoBehaviour
                 new DayPhase(
                     onEnter: OnEnter,
                     onExit: OnExit,
+                    this.gameUI,
                     this.Camera,
                     this.playerHandler,
                     this.trialVoteHandler,
@@ -69,6 +73,8 @@ public class GameState : MonoBehaviour
                 new NightPhase(
                     onEnter: OnEnter,
                     onExit: OnExit,
+                    this.gameUI,
+                    this.trialVoteHandler,
                     this.playerHandler,
                     useStandard),
             };
@@ -88,6 +94,9 @@ public class GameState : MonoBehaviour
         this.judgementVoteHandler = new JudgementVoteHandler(this);
         if (!SunLight) SunLight = GameObject.Find("Directional Light").GetComponent<Light>();
 
+        this.startPhase = new StartPhase();
+        this.endPhase = new EndPhase();
+        this.gameUI = this.GetComponent<GameUI>();
 
         if (!playerHandler)
         {
@@ -173,7 +182,6 @@ public class GameState : MonoBehaviour
         }
     }
 
-
     public void PutPlayerOnTrialPlayer(int playerIndex, int voteCount)
     {
         if (playerIndex == -1)
@@ -231,22 +239,40 @@ public class GameState : MonoBehaviour
             }
         }
 
-        var phase = this.Phases[this.CurrentPhaseIndex];
+        var phase = GetCurrentPhase();
 
         phase.Update(this);
+
+        GoToNextPhaseIfEnded();
+
+        UpdatePhaseLabel();
+    }
+
+    private void GoToNextPhaseIfEnded()
+    {
+        var phase = GetCurrentPhase();
+
+        if (phase is StartPhase startPhase)
+            return;
+
+        if (phase is EndPhase endPhase)
+            return;
 
         if (phase.HasEnded)
         {
             this.CurrentPhaseIndex = (this.CurrentPhaseIndex + 1) % this.Phases.Length;
             phases[this.CurrentPhaseIndex].Reset();
         }
-
-        UpdatePhaseLabel();
     }
 
     public Phase GetCurrentPhase()
     {
-        if (this.CurrentPhaseIndex < 0 || this.CurrentPhaseIndex >= this.phases.Length)
+        if (!this.startPhase.HasEnded)
+        {
+            return this.startPhase;
+        }        
+
+        if (this.CurrentPhaseIndex < 0 || this.CurrentPhaseIndex >= this.Phases.Length)
             return null;
 
         return this.Phases[this.CurrentPhaseIndex];
@@ -264,7 +290,7 @@ public class GameState : MonoBehaviour
 
     private void UpdatePhaseLabel()
     {
-        var phase = this.Phases[this.CurrentPhaseIndex];
+        var phase = this.GetCurrentPhase();
         LabelPhase.text = phase.ToString();
     }
 

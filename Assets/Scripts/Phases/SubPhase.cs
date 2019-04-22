@@ -9,14 +9,14 @@ public abstract class SubPhase
     protected SubPhase(string name)
     {
         Name = name;
-        EnterTime = DateTime.MaxValue;
+        EnterTime = float.MaxValue;
     }
 
     public string Name { get; }
 
     public bool IsActive { get; protected set; }
-    public DateTime EnterTime { get; protected set; }
-    public DateTime ExitTime { get; protected set; }
+    public float EnterTime { get; protected set; }
+    public float ExitTime { get; protected set; }
     public bool HasEnded { get; set; }
 
     public Phase Phase { get; private set; }
@@ -51,7 +51,7 @@ public abstract class SubPhase
         //Debug.Log($"Enter Sub Phase: {this.Name}");
         // only set a start time if we have resetted the phase
         // so we can re-use a phase. Eg. voting        
-        this.EnterTime = DateTime.UtcNow;
+        this.EnterTime = Time.time;
 
         this.HasEnded = false;
         this.IsActive = true;
@@ -63,7 +63,7 @@ public abstract class SubPhase
         //Debug.Log($"Exit Sub Phase: {this.Name}");
         this.IsActive = false;
         this.HasEnded = true;
-        this.ExitTime = DateTime.UtcNow;
+        this.ExitTime = Time.time;
         this.Exit();
     }
 
@@ -71,8 +71,8 @@ public abstract class SubPhase
     {
         this.IsActive = false;
         this.HasEnded = false;
-        this.EnterTime = DateTime.MaxValue;
-        this.ExitTime = DateTime.MaxValue;
+        this.EnterTime = float.MaxValue;
+        this.ExitTime = float.MaxValue;
         this.OnReset();
         this.AfterReset();
     }

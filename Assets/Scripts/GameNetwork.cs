@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
@@ -145,7 +146,15 @@ public class GameNetwork : MonoBehaviour
             Debug.Log("We got a packet from the chat bot!: " +
                       data + ", command: " + command + ", args: " + args + ", username: " + playerName);
 
-            if (command.InvariantEquals("join"))
+            if (command.InvariantEquals("last-will"))
+            {
+                HandleLastWillUpdate(packet, playerName, args);
+            }
+            else if (command.InvariantEquals("death-note"))
+            {
+                HandleDeathNoteUpdate(packet, playerName, args);
+            }
+            else if (command.InvariantEquals("join"))
             {
                 HandlePlayerJoin(packet, playerName, playerColor);
             }
@@ -164,6 +173,60 @@ public class GameNetwork : MonoBehaviour
         }
     }
 
+    private void HandleLastWillUpdate(Packet packet, string myPlayerName, string args)
+    {
+        var playerIndex = this.playerHandler.FindPlayerIndex(myPlayerName);
+        if (playerIndex < 0)
+        {
+            Send(packet.Client, packet.CorrelationId, myPlayerName, $"last-will_changed|Player does not exist");
+            return;
+        }
+
+        try
+        {
+            var player = this.playerHandler.GetPlayerByIndex(playerIndex);
+            var bytes = Convert.FromBase64String(args);
+            var lastWill = Encoding.UTF8.GetString(bytes);
+            player.LastWill = lastWill;
+            Debug.Log("Last will updated: " + player.LastWill);
+        }
+        catch (Exception exc)
+        {
+            Debug.LogError(exc.ToString());
+        }
+        finally
+        {
+            Send(packet.Client, packet.CorrelationId, myPlayerName, "last-will_changed|");
+        }
+    }
+
+    private void HandleDeathNoteUpdate(Packet packet, string myPlayerName, string args)
+    {
+        var playerIndex = this.playerHandler.FindPlayerIndex(myPlayerName);
+        if (playerIndex < 0)
+        {
+            Send(packet.Client, packet.CorrelationId, myPlayerName, $"death-note_changed|Player does not exist");
+            return;
+        }
+
+        try
+        {
+            var player = this.playerHandler.GetPlayerByIndex(playerIndex);
+            var bytes = Convert.FromBase64String(args);
+            var value = Encoding.UTF8.GetString(bytes);
+            player.DeathNote = value;
+            Debug.Log("Death note updated: " + player.DeathNote);
+        }
+        catch (Exception exc)
+        {
+            Debug.LogError(exc.ToString());
+        }
+        finally
+        {
+            Send(packet.Client, packet.CorrelationId, myPlayerName, "death-note_changed|");
+        }
+    }
+
     private void HandlePlayerVote(Packet packet, string myPlayerName, string args)
     {
         try
@@ -178,6 +241,13 @@ public class GameNetwork : MonoBehaviour
             if (myPlayerIndex == -1)
             {
                 Send(packet.Client, packet.CorrelationId, myPlayerName, $"vote_failed|You are not assigned to a character!");
+                return;
+            }
+
+            var player = this.playerHandler.GetPlayerByIndex(myPlayerIndex);
+            if (player.Dead)
+            {
+                Send(packet.Client, packet.CorrelationId, myPlayerName, $"vote_failed|U is ded.");
                 return;
             }
 
@@ -272,7 +342,7 @@ public class GameNetwork : MonoBehaviour
 
         var targetPlayer = playerHandler.GetPlayerByIndex(targetPlayerIndex);
 
-        if (targetPlayer.Lynched)
+        if (targetPlayer.Dead)
         {
             Send(packet.Client, packet.CorrelationId, playerName,
                 $"vote_failed|{targetPlayer.PlayerName} is dead.");
@@ -377,7 +447,7 @@ public class GameNetwork : MonoBehaviour
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static PlayerInfo MapPlayerInfo(PlayerController x)
     {
-        return new PlayerInfo { Lynched = x.Lynched, Name = x.PlayerName, Role = x.Role };
+        return new PlayerInfo { Lynched = x.Dead, Name = x.PlayerName, Role = x.Role };
     }
 }
 
@@ -415,8 +485,8 @@ public class SubPhaseInfo
     public string Name { get; set; }
     public float Timer { get; set; }
     public float Duration { get; set; }
-    public DateTime EnterTime { get; set; }
-    public DateTime ExitTime { get; set; }
+    public float EnterTime { get; set; }
+    public float ExitTime { get; set; }
     public bool HasEnded { get; set; }
     public bool IsActive { get; set; }
 }

@@ -5,8 +5,7 @@ using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
-    #region secret fields
-
+    #region private
     private Animator animator;
     private Vector3 oldPosition;
     private float currentWalkTime = 0f;
@@ -26,35 +25,47 @@ public class PlayerController : MonoBehaviour
 
     private float labelOffsetY = 32f;
 
-    #endregion
-
-    public HouseController House;
-
-    public Player PlayerData;
-
-    public bool Lynched = false;
-
-    public Color Color = UnityEngine.Color.white;
-
     private bool moveToNextWaypoint = false;
 
-    public TextMeshProUGUI NameTag;
+    #endregion
+
+    #region player
+
+    public string PlayerName => Username ?? Name;
+
+    public Role Role { get; set; }
+
+    public string Name { get; set; }
+
+    public string Username { get; set; }
+
+    public string LastWill { get; set; }
+
+    public string DeathNote { get; set; }
+
+    #endregion
+
+    #region controller
+    public HouseController House;
+
+    public bool Dead = false;
 
     public NavMeshAgent agent;
-
-    public bool IsAssigned => !string.IsNullOrEmpty(PlayerData.AssignedUsername);
 
     public bool WaypointsEnabled = false;
 
     public Transform DeathAnimationPosition;
 
-    public string PlayerName => this.PlayerData?.UsernameOrName;
-
-    public Role Role => this.PlayerData?.AssignedRole;
-
     public bool IsDeathAnimationOver =>
         DateTime.UtcNow - this.deathAnimationStart > TimeSpan.FromSeconds(5);
 
+    public bool IsAssigned => !string.IsNullOrEmpty(Username);
+    #endregion
+
+    #region ui
+    public Color Color = UnityEngine.Color.white;
+    public TextMeshProUGUI NameTag;
+    #endregion
 
     public void MoveToNextWaypoint()
     {
@@ -75,16 +86,18 @@ public class PlayerController : MonoBehaviour
 
     public void Leave()
     {
-        PlayerData.Reset();
+        LastWill = null;
+        Username = null;
+        Role = null;
+
         NameTag.color = Color.white;
         NameTag.text = "!town join";
     }
 
     public PlayerController Assign(string username, Color color, Role role)
     {
-        PlayerData.AssignedUsername = username;
-        PlayerData.AssignedRole = role;
-        PlayerData.Color = color;
+        Username = username;
+        Role = role;
         NameTag.color = color;
         NameTag.text = username;
         return this;
@@ -135,7 +148,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerData = Player.Random();
+        this.RandomizePlayerData();
         this.gameCamera = GameObject.FindObjectOfType<Camera>();
         this.wpCamera = this.gameCamera.GetComponent<WaypointCamera>();
         if (!this.agent) this.agent = this.gameObject.GetComponent<NavMeshAgent>();
@@ -147,9 +160,8 @@ public class PlayerController : MonoBehaviour
 
         if (NameTag)
         {
-            //var screenPosition = gameCamera.WorldToScreenPoint(GetLabelPosition());
-            this.nameTagFarOffset = Vector3.zero; // NameTag.rectTransform.position - screenPosition;
-            this.nameTagNearOffset = Vector3.zero;// NameTag.rectTransform.position - screenPosition;
+            this.nameTagFarOffset = Vector3.zero;
+            this.nameTagNearOffset = Vector3.zero;
         }
 
         this.transform.position = new Vector3(0, -999, 0);
@@ -171,6 +183,11 @@ public class PlayerController : MonoBehaviour
             break;
         }
 
+    }
+
+    private void RandomizePlayerData()
+    {
+        this.Name = $"Player {Mathf.Floor(UnityEngine.Random.value * 1000)}";
     }
 
     private Vector3 GetLabelPosition()
@@ -215,7 +232,7 @@ public class PlayerController : MonoBehaviour
             this.modelRenderer.material.SetColor("_AlbedoColor", this.Color);
         }
 
-        if (Lynched)
+        if (Dead)
         {
             return;
         }
@@ -280,6 +297,13 @@ public class PlayerController : MonoBehaviour
         return this.HasReached(target);
     }
 
+    public void UpdateLastWill(string lastWill)
+    {
+        LastWill = lastWill;
+    }
 
-
+    public void AssignRole(Role role)
+    {
+        this.Role = role;
+    }
 }

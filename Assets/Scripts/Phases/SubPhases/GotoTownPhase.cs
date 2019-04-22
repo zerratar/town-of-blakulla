@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 public class GotoTownPhase : ConditionBasedSubPhase
 {
@@ -24,7 +25,7 @@ public class GotoTownPhase : ConditionBasedSubPhase
 
     public override bool Enabled() => true;
 
-    protected override string GetStateInfo() => null;
+    protected override string GetDebugInfo() => null;
 
     protected override bool OnCondition(SubPhase phase, GameState state)
     {

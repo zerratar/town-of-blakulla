@@ -20,7 +20,7 @@ public abstract class ConditionBasedSubPhase : SubPhase
 
     protected override void OnReset() { }
 
-    protected abstract string GetStateInfo();
+    protected abstract string GetDebugInfo();
 
     public override string ToDisplayString(Phase phase)
     {
@@ -28,7 +28,7 @@ public abstract class ConditionBasedSubPhase : SubPhase
 
         result.Append($"{phase.Name} - {Name} ");
 
-        var value = GetStateInfo();
+        var value = GetDebugInfo();
         if (!string.IsNullOrEmpty(value))
             result.Append(value);
 

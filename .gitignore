@@ -34,3 +34,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+*.meta
+PolygonFantasyCharacters/
+Fantasy Adventure Environment/
+AllSky/
+AdvancedCelShaders/
