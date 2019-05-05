@@ -1,4 +1,5 @@
 ﻿using System;
+using NUnit.Framework.Constraints;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -50,6 +51,8 @@ public class PlayerController : MonoBehaviour
 
     public bool Dead = false;
 
+    public PlayerController Murderer = null;
+
     public NavMeshAgent agent;
 
     public bool WaypointsEnabled = false;
@@ -60,12 +63,55 @@ public class PlayerController : MonoBehaviour
         DateTime.UtcNow - this.deathAnimationStart > TimeSpan.FromSeconds(5);
 
     public bool IsAssigned => !string.IsNullOrEmpty(Username);
+
+    public bool Blackmailed { get; set; }
+
+    public bool Cleaned { get; set; }
+
+    public bool TargetBySerialKiller { get; set; }
+
+    public bool TargetByGodfather { get; set; }
+
+    public bool TargetByMafioso { get; set; }
+
+    public PlayerController TargetedBy { get; set; }
+
+    public bool Healed { get; set; }
+
+    public bool Jailed { get; set; }
+
+    public PlayerController Protectee { get; set; }
+
+    public bool RevealedAsMayor { get; set; }
+
+    public bool ProtectedByVest { get; set; }
+
+    public int HealCounter = 0;
+
+    public int ProtectiveVestCounter { get; set; }
+
     #endregion
 
     #region ui
     public Color Color = UnityEngine.Color.white;
-    public TextMeshProUGUI NameTag;
+    public TextWithBackground NameTag;
+    private RectTransform NameTagRect;
+
     #endregion
+
+    public void ResetAbilityProperties()
+    {
+        Blackmailed = false;
+        Cleaned = false;
+        TargetBySerialKiller = false;
+        TargetByGodfather = false;
+        TargetByMafioso = false;
+        TargetedBy = null;
+        Healed = false;
+        Jailed = false;
+        ProtectedByVest = false;
+        Protectee = null;
+    }
 
     public void MoveToNextWaypoint()
     {
@@ -91,13 +137,13 @@ public class PlayerController : MonoBehaviour
         Role = null;
 
         NameTag.color = Color.white;
-        NameTag.text = "!town join";
+        NameTag.text = this.PlayerName; //"!town join";
     }
 
-    public PlayerController Assign(string username, Color color, Role role)
+    public PlayerController Assign(string username, Color color) // , Role role
     {
         Username = username;
-        Role = role;
+        //Role = role;
         NameTag.color = color;
         NameTag.text = username;
         return this;
@@ -162,6 +208,7 @@ public class PlayerController : MonoBehaviour
         {
             this.nameTagFarOffset = Vector3.zero;
             this.nameTagNearOffset = Vector3.zero;
+            this.NameTagRect = this.NameTag.GetComponent<RectTransform>();
         }
 
         this.transform.position = new Vector3(0, -999, 0);
@@ -187,7 +234,8 @@ public class PlayerController : MonoBehaviour
 
     private void RandomizePlayerData()
     {
-        this.Name = $"Player {Mathf.Floor(UnityEngine.Random.value * 1000)}";
+        this.Name = $"Player{Mathf.Floor(UnityEngine.Random.value * 1000)}";
+        if (this.NameTag) this.NameTag.text = this.Name;
     }
 
     private Vector3 GetLabelPosition()
@@ -224,7 +272,7 @@ public class PlayerController : MonoBehaviour
                 ? Vector3.Lerp(nameTagFarOffset, nameTagNearOffset, wpCamera.WaypointProgress)
                 : Vector3.Lerp(nameTagNearOffset, nameTagFarOffset, wpCamera.WaypointProgress);
 
-            this.NameTag.rectTransform.position = screenPosition + offset + new Vector3(0, labelOffsetY, 0);
+            this.NameTagRect.position = screenPosition + offset + new Vector3(0, labelOffsetY, 0);
         }
 
         if (this.modelRenderer)
@@ -305,5 +353,43 @@ public class PlayerController : MonoBehaviour
     public void AssignRole(Role role)
     {
         this.Role = role;
+    }
+
+    public void Heal()
+    {
+        ++this.HealCounter;
+        this.Healed = true;
+    }
+
+    public void RevealAsMayor()
+    {
+        this.RevealedAsMayor = true;
+        // also do magic stuff
+    }
+
+    public void Kill(PlayerController murderer)
+    {
+        this.Murderer = murderer;
+        this.Dead = true;
+    }
+
+    public void MarkForKill(PlayerController killer, bool? isGodfather = null, bool? isMafioso = null, bool? isSerialKiller = null)
+    {
+        if (isMafioso != null)
+            this.TargetByMafioso = isMafioso.Value;
+
+        if (isGodfather != null)
+            this.TargetByGodfather = isGodfather.Value;
+
+        if (isSerialKiller != null)
+            this.TargetBySerialKiller = isSerialKiller.Value;
+
+        this.TargetedBy = killer;
+    }
+
+    public void UseProtectiveVest()
+    {
+        ++this.ProtectiveVestCounter;
+        this.ProtectedByVest = true;
     }
 }

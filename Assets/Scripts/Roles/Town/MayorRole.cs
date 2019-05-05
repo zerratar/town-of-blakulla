@@ -10,12 +10,13 @@
     {
     }
 
-    protected override bool CanUseAbility()
+    public override bool CanUseAbility(PlayerController player, GameState gameState, PlayerController[] targets)
     {
-        return false;
+        return !player.Dead && gameState.IsDay && !player.RevealedAsMayor;
     }
 
-    protected override void UseAbility()
+    public override void UseAbility(PlayerController player, PlayerController[] targets)
     {
+        player.RevealAsMayor();
     }
 }

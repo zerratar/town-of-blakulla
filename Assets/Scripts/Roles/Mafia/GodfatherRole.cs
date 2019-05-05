@@ -1,5 +1,9 @@
-﻿public class GodfatherRole : Role
+﻿using System.Linq;
+
+public class GodfatherRole : Role
 {
+    private PlayerController lastAbilityTarget;
+
     public GodfatherRole()
         : base(
             "Godfather",
@@ -10,12 +14,21 @@
     {
     }
 
-    protected override bool CanUseAbility()
+    public override bool CanUseAbility(PlayerController player, GameState gameState, PlayerController[] targets)
     {
-        return false;
+        return !player.Dead && gameState.IsNight && targets != null && targets.Length > 0
+               && targets.All(x => x != player && x.Role.Alignment != Alignment && x.Dead);
     }
 
-    protected override void UseAbility()
+    public override void UseAbility(PlayerController player, PlayerController[] targets)
     {
+        if (lastAbilityTarget)
+        {
+            lastAbilityTarget.TargetByGodfather = false;
+        }
+
+        targets[0].MarkForKill(player, true);
+
+        lastAbilityTarget = targets[0];
     }
 }

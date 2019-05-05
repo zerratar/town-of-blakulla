@@ -1,4 +1,6 @@
-﻿public class JailorRole : Role
+﻿using System.Linq;
+
+public class JailorRole : Role
 {
     public JailorRole()
         : base(
@@ -10,12 +12,17 @@
     {
     }
 
-    protected override bool CanUseAbility()
+    public override bool CanUseAbility(PlayerController player, GameState gameState, PlayerController[] targets)
     {
-        return false;
+        return !player.Dead
+               && gameState.IsDay
+               && targets != null
+               && targets.Length > 0
+               && targets.All(x => x != player);
     }
 
-    protected override void UseAbility()
+    public override void UseAbility(PlayerController player, PlayerController[] targets)
     {
+        targets[0].Jailed = true;
     }
 }

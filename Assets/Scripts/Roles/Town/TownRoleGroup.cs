@@ -4,7 +4,7 @@
         : base(
             "Town",
             new MayorRole(),
-            new BodyGuardRole(),
+            new BodyguardRole(),
             new JailorRole(),
             new DoctorRole())
     {

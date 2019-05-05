@@ -12,17 +12,16 @@ public class GameUI : MonoBehaviour
 
     private GameMessage currentMessage;
 
-    public TextMeshProUGUI lblMessage;
+    public TextWithBackground lblMessage;
 
     public TextMeshProUGUI lastWillText;
 
     public GameObject lastWill;
 
-
     // Start is called before the first frame update
     void Start()
     {
-        if (!lblMessage) lblMessage = GameObject.Find("lblMessage").GetComponent<TextMeshProUGUI>();
+        if (!lblMessage) lblMessage = GameObject.Find("lblMessage").GetComponent<TextWithBackground>();
         if (!lastWillText) lastWillText = GameObject.Find("lblLastWill").GetComponent<TextMeshProUGUI>();
         if (!lastWill) lastWill = GameObject.Find("lastWill");
     }
@@ -49,15 +48,15 @@ public class GameUI : MonoBehaviour
         }
     }
 
-    public void SetMessagePositionDefault()
-    {
-        this.lblMessage.rectTransform.localPosition = new Vector3(0, 188.7f);
-    }
+    //public void SetMessagePositionDefault()
+    //{
+    //    this.lblMessage.rectTransform.localPosition = new Vector3(0, MessagePosY);
+    //}
 
-    public void SetMessagePositionGallows()
-    {
-        this.lblMessage.rectTransform.localPosition = new Vector3(0, 58.4f);
-    }
+    //public void SetMessagePositionGallows()
+    //{
+    //    this.lblMessage.rectTransform.localPosition = new Vector3(0, MessagePosYGallows);
+    //}
 
     public int QueuedMessageCount => messageQueue.Count;
 

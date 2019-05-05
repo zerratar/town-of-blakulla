@@ -34,7 +34,7 @@ public class GoHomePhase : ConditionBasedSubPhase
 
     protected override void Exit()
     {
-        this.gameUi.SetMessagePositionDefault();
+        //this.gameUi.SetMessagePositionDefault();
     }
 
     public override bool Enabled() => true;

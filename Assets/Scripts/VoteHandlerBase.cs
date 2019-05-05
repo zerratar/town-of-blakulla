@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -84,6 +85,11 @@ public abstract class VoteHandlerBase<TKey>
     public int GetPossibleVoteCount()
     {
         return this.gameState.GetAliveAndAssignedPlayers().Count;
+    }
+
+    public ReadOnlyDictionary<int, TKey> GetVotes()
+    {
+        return new ReadOnlyDictionary<int, TKey>(this.votes);
     }
 
     //public int GetVoteCount()

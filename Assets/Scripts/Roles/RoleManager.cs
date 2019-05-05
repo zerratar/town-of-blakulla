@@ -1,10 +1,17 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class RoleManager
 {
     private readonly ConcurrentDictionary<string, RoleGroup> roleGroups;
+
+    private readonly HashSet<string> assignedRoles
+        = new HashSet<string>();
+
+    private readonly ConcurrentDictionary<string, int> roleCount
+        = new ConcurrentDictionary<string, int>();
 
     public RoleManager()
     {
@@ -14,15 +21,34 @@ public class RoleManager
         this.AddRoleGroup(new NeutralRoleGroup());
     }
 
-    public RoleGroup GetGroupByRole(Role role)
+    public void ResetAssignedRoles()
     {
-        return this.roleGroups.FirstOrDefault(x => x.Value.HasRole(role.Name)).Value;
+        assignedRoles.Clear();
+        roleCount.Clear();
     }
+
+    //public RoleGroup GetGroupByRole(Role role)
+    //{
+    //    return this.roleGroups.FirstOrDefault(x => x.Value.HasRole(role.Name)).Value;
+    //}
 
     public RoleGroup GetRandomGroup()
     {
+        var groups = roleGroups.Values.ToList();
         var groupIndex = Mathf.FloorToInt(roleGroups.Count * UnityEngine.Random.value);
-        return roleGroups.Values.ToList()[groupIndex];
+        var group = groups[groupIndex];
+
+        roleCount.TryGetValue(group.Name, out var count);
+
+        while (count >= 3)
+        {
+            groupIndex = Mathf.FloorToInt(roleGroups.Count * UnityEngine.Random.value);
+            group = groups[groupIndex];
+            roleCount.TryGetValue(group.Name, out count);
+        }
+
+        roleCount[group.Name] = count + 1;
+        return group;
     }
 
     public Role GetRandomRole()
@@ -30,20 +56,26 @@ public class RoleManager
         return GetRandomRoleInGroup(GetRandomGroup());
     }
 
-    public Role GetRandomRole(string groupName)
-    {
-        if (!roleGroups.TryGetValue(groupName, out var group))
-        {
-            return null;
-        }
+    //public Role GetRandomRole(string groupName)
+    //{
+    //    if (!roleGroups.TryGetValue(groupName, out var group))
+    //    {
+    //        return null;
+    //    }
 
-        return GetRandomRoleInGroup(group);
-    }
+    //    return GetRandomRoleInGroup(group);
+    //}
 
     private Role GetRandomRoleInGroup(RoleGroup group)
     {
         var roleIndex = Mathf.FloorToInt(group.Roles.Length * UnityEngine.Random.value);
-        return group.GetRoleByIndex(roleIndex);
+        var role = group.GetRoleByIndex(roleIndex);
+        while (role.Unique && assignedRoles.Contains(role.Name))
+        {
+            roleIndex = Mathf.FloorToInt(group.Roles.Length * UnityEngine.Random.value);
+            role = group.GetRoleByIndex(roleIndex);
+        }
+        return role;
     }
 
     private void AddRoleGroup(RoleGroup group)

@@ -18,7 +18,7 @@ public class PlayerHandler : MonoBehaviour
         lock (mutex)
         {
             this.players = new List<PlayerController>(GameObject.FindObjectsOfType<PlayerController>());
-            
+
             foreach (var player in players)
             {
                 player.AssignRole(roleManager.GetRandomRole());
@@ -44,8 +44,8 @@ public class PlayerHandler : MonoBehaviour
         lock (mutex)
         {
             if (index < 0 || index >= this.players.Count) return null;
-            var role = roleManager.GetRandomRole();
-            return this.players[index].Assign(username, color, role);
+            //var role = roleManager.GetRandomRole();
+            return this.players[index].Assign(username, color);
         }
     }
 
@@ -68,6 +68,16 @@ public class PlayerHandler : MonoBehaviour
                 .Where(x => !x.IsAssigned)
                 .Select(x => this.players.IndexOf(x))
                 .ToList();
+        }
+    }
+
+    public PlayerController FindPlayer(string playerName)
+    {
+        lock (mutex)
+        {
+            return players.FirstOrDefault(x =>
+                x.PlayerName != null &&
+                x.PlayerName.Equals(playerName, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 
@@ -131,5 +141,4 @@ public class PlayerHandler : MonoBehaviour
             return this.players.ToList();
         }
     }
-
 }

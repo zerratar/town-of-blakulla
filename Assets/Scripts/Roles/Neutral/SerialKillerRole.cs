@@ -1,21 +1,29 @@
-﻿public class SerialKillerRole : Role
+﻿using System.Linq;
+
+public class SerialKillerRole : Role
 {
-    public SerialKillerRole() 
+    public SerialKillerRole()
         : base(
-            "Serial Killer", 
+            "Serial Killer",
             "Neutral",
             "A psychotic criminal who wants everyone to die.",
             "You may choose to attack a player each night.",
-            "If you are role blocked you will attack the role blocker instead of your target.")
+            "If you are role blocked you will attack the role blocker instead of your target.",
+            false)
     {
     }
 
-    protected override bool CanUseAbility()
+    public override bool CanUseAbility(PlayerController player, GameState gameState, PlayerController[] targets)
     {
-        return false;
+        return !player.Dead
+               && gameState.IsNight
+               && targets != null
+               && targets.Length > 0
+               && targets.All(x => x != player && !x.Dead);
     }
 
-    protected override void UseAbility()
+    public override void UseAbility(PlayerController player, PlayerController[] targets)
     {
+        targets[0].MarkForKill(player, isSerialKiller: true);
     }
 }

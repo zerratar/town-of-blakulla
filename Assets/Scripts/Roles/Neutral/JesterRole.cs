@@ -1,6 +1,8 @@
-﻿public class JesterRole : Role
+﻿using System.Linq;
+
+public class JesterRole : Role
 {
-    public JesterRole() 
+    public JesterRole()
         : base("Jester",
             "Neutral",
             "A crazed lunatic whose life goal is to be publicly executed.",
@@ -9,12 +11,20 @@
     {
     }
 
-    protected override bool CanUseAbility()
+    public override bool CanUseAbility(PlayerController player, GameState gameState, PlayerController[] targets)
     {
-        return false;
+        var canUseAbility = player.Dead && !player.Murderer;
+        if (!canUseAbility || targets == null || targets.Length < 1)
+        {
+            return false;
+        }
+
+        var targetablePlayers = gameState.GetAbstainerAndGuiltyVoters();
+        return targets.All(x => targetablePlayers.Contains(x));
     }
 
-    protected override void UseAbility()
+    public override void UseAbility(PlayerController player, PlayerController[] targets)
     {
+        targets[0].Kill(player);
     }
 }

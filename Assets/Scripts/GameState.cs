@@ -85,6 +85,10 @@ public class GameState : MonoBehaviour
 
     public bool IsVoteForJudgement => judgementVoteHandler.CanVote;
 
+    public bool IsNight => GetCurrentPhase() is NightPhase;
+
+    public bool IsDay => GetCurrentPhase() is DayPhase;
+
     public bool CanVote => judgementVoteHandler.CanVote || this.trialVoteHandler.CanVote;
 
     void Start()
@@ -155,6 +159,22 @@ public class GameState : MonoBehaviour
         this.dayCycleTimer = this.dayCycleFadeLength;
     }
 
+    public IReadOnlyList<PlayerController> GetAbstainerAndGuiltyVoters()
+    {
+        var resultList = new List<PlayerController>();
+        var players = playerHandler.GetPlayers();
+        var votes = judgementVoteHandler.GetVotes();
+        for (var i = 0; i < players.Count; ++i)
+        {
+            var hasVoted = votes.TryGetValue(i, out var result);
+            if (hasVoted && result == JudgementVoteHandler.VoteGuilty || !hasVoted)
+            {
+                resultList.Add(players[i]);
+            }
+        }
+
+        return resultList;
+    }
 
     public void JudgePlayer(string result, int voteCount)
     {
@@ -168,7 +188,7 @@ public class GameState : MonoBehaviour
 
         if (string.IsNullOrEmpty(result))
         {
-            Debug.Log($"The vote has ended with not enough votes.");            
+            Debug.Log($"The vote has ended with not enough votes.");
             return;
         }
 

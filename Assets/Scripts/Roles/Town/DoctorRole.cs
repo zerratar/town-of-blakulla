@@ -1,6 +1,6 @@
 ﻿public class DoctorRole : Role
 {
-    public DoctorRole() 
+    public DoctorRole()
         : base("Doctor",
             "Town",
             "A surgeon skilled in trauma care who secretly heals people.",
@@ -9,12 +9,15 @@
     {
     }
 
-    protected override bool CanUseAbility()
+    public override bool CanUseAbility(PlayerController player, GameState gameState, PlayerController[] targets)
     {
-        return false;
+        return !player.Dead && gameState.IsNight
+               && targets != null && targets.Length > 0
+               && (targets[0] != player || targets[0].HealCounter == 0);
     }
 
-    protected override void UseAbility()
+    public override void UseAbility(PlayerController player, PlayerController[] targets)
     {
+        targets[0].Heal();
     }
 }
