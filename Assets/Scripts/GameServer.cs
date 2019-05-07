@@ -191,7 +191,7 @@ public class GameServer : IDisposable
         try
         {
             var tcpClient = this.server.EndAcceptTcpClient(ar);
-            this.ClientConnected(tcpClient);
+            this.OnClientConnected(tcpClient);
         }
         catch { }
         try
@@ -201,10 +201,16 @@ public class GameServer : IDisposable
         catch { }
     }
 
-    private void ClientConnected(TcpClient client)
+    public void OnClientConnected(TcpClient client)
     {
         Debug.Log("Client connected");
         this.connectedClients.Add(new GameClient(this, client));
+    }
+
+    public void OnClientDisconnected(GameClient gameClient)
+    {
+        Debug.Log("Client disconnected");
+        this.connectedClients.Remove(gameClient);
     }
 
     private bool TryParseHexColor(string hexColorString, out Color color)
@@ -231,5 +237,4 @@ public class GameServer : IDisposable
         color = new Color(rgb[0], rgb[1], rgb[2], 1f);
         return true;
     }
-
 }

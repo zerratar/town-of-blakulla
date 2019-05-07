@@ -15,3 +15,5 @@ public class GameUpdateInfo
     public bool Joinable { get; set; }
     public List<PlayerInfo> Players { get; set; }
 }
+
+public class GameExit { }

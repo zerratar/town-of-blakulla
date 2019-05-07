@@ -55,6 +55,20 @@ public class GameNetwork : MonoBehaviour
         server.HandleNextPacket(server, playerHandler, gameState);
     }
 
+    void OnApplicationQuit()
+    {
+        Debug.Log("Application ending after " + Time.time + " seconds");
+
+        var client = this.server.Client;
+        if (client == null) return;
+        var request = new Request<GameExit>();
+        request.Type = "exit";
+        request.Data = new GameExit();
+        this.server.SendObject(request);
+
+        server.Stop();
+    }
+
     private void SendUpdatePacket()
     {
         var client = this.server.Client;
@@ -62,6 +76,8 @@ public class GameNetwork : MonoBehaviour
         var gameStateData = GetGameStateRequest();
         this.server.SendObject(gameStateData);
     }
+
+
 
     private Request<GameUpdateInfo> GetGameStateRequest()
     {
@@ -123,7 +139,7 @@ public class GameNetwork : MonoBehaviour
             Blackmailed = x.Blackmailed,
             TargetByGodfather = x.TargetByGodfather,
             TargetByMafioso = x.TargetByMafioso,
-            Cleaned = x.Cleaned,            
+            Cleaned = x.Cleaned,
             Healed = x.Healed,
             Jailed = x.Jailed,
             RevealedAsMayor = x.RevealedAsMayor,

@@ -35,7 +35,13 @@
             gameUi.ShowLastWill(player.LastWill, 7f);
         }
 
-        gameUi.ShowMessage($"<b>{player.PlayerName}</b>'s role was <b><color={player.Role.AlignmentColor}>{player.Role.Name}</color></b>", 2.5f);        
+        if (player.Role == null)
+        {
+            gameUi.ShowMessage($"Oh no, {player.PlayerName} does not have a role assigned!!! ITS A BUG!! :o", 5f);
+            return;
+        }
+
+        gameUi.ShowMessage($"<b>{player.PlayerName}</b>'s role was <b><color={player.Role.AlignmentColor}>{player.Role.Name}</color></b>", 2.5f);
     }
 
     protected override void Exit()

@@ -45,7 +45,12 @@ public class PlayerHandler : MonoBehaviour
         {
             if (index < 0 || index >= this.players.Count) return null;
             //var role = roleManager.GetRandomRole();
-            return this.players[index].Assign(username, color);
+            var player = this.players[index];
+            if (player.Role == null)
+            {
+                player.Role = roleManager.GetRandomRole();
+            }
+            return player.Assign(username, color);
         }
     }
 
@@ -65,7 +70,7 @@ public class PlayerHandler : MonoBehaviour
         lock (mutex)
         {
             return players
-                .Where(x => !x.IsAssigned)
+                .Where(x => !x.IsAssigned && !x.Dead)
                 .Select(x => this.players.IndexOf(x))
                 .ToList();
         }

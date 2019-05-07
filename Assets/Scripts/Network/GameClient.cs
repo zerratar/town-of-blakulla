@@ -36,15 +36,31 @@ public class GameClient : IDisposable
             try
             {
                 msg = await this.reader.ReadLineAsync();
+                Debug.WriteLine(msg);
+                this.HandlePacket(msg);
             }
             catch (Exception exc)
             {
                 Debug.WriteLine(exc.ToString());
+                Disconnect();
+                return;
             }
-            Debug.WriteLine(msg);
-            this.HandlePacket(msg);
+
         }
 
+    }
+
+    private void Disconnect()
+    {
+        try
+        {
+            this.Dispose();
+        }
+        catch
+        {
+        }
+
+        server.OnClientDisconnected(this);
     }
 
     public bool Connected => this.client.Connected;
